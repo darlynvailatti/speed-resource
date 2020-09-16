@@ -1,9 +1,6 @@
-import { Module } from "@nestjs/common";
-
+import { Module } from '@nestjs/common';
 
 @Module({
-    imports: []
+  imports: [],
 })
-export class TestEnvironmentModule {
-
-}
+export class TestEnvironmentModule {}

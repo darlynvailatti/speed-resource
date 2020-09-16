@@ -1,11 +1,8 @@
-import { Module } from "@nestjs/common";
-import { TeamModule } from "./module/team/team.module";
-import { TestEnvironmentModule } from "./module/test-environment/test.environment.module";
-
+import { Module } from '@nestjs/common';
+import { DatabaseModule } from './module/database/database.module';
+import { TeamModule } from './module/team/team.module';
 
 @Module({
-    imports: [TeamModule, TestEnvironmentModule]
+  imports: [DatabaseModule, TeamModule],
 })
-export class AppModule {
-
-}
+export class AppModule {}

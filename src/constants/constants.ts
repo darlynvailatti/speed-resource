@@ -1,4 +1,4 @@
 export enum ConstantsApiTags {
-    TEAM = "team",
-    TEST_TEMPLATE = "test-template"
+  TEAM = 'team',
+  TEST_TEMPLATE = 'test-template',
 }

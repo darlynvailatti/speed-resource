@@ -1,10 +1,10 @@
 {
-  "name": "speed-resource",
+  "name": "speed-resource-nestjs",
   "version": "0.0.1",
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -18,7 +18,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -f .env",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -f .env",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -f .env"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -26,13 +29,17 @@
     "@nestjs/mongoose": "^6.4.0",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/swagger": "^4.5.12",
+    "@nestjs/typeorm": "^7.1.4",
     "mongoose": "^5.9.10",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-sequence": "^5.2.2",
+    "pg": "^8.3.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
-    "swagger-ui-express": "^4.1.4"
+    "speed-common": "^0.0.8",
+    "swagger-ui-express": "^4.1.4",
+    "typeorm": "^0.2.26"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

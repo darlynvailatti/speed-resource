@@ -1,30 +1,18 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
-import { AthleteRepositoryService } from "../repository/athlete.respository.service";
-import { Athlete } from "src/model/team/athlete";
-import { CreateAthleteDTO as CreateAthleteDTO } from "../controller/dto/create-athlete.dto";
-import { EnsureThat } from "src/common/validate";
-import { create } from "domain";
-
+import { Injectable } from '@nestjs/common';
+import { AthleteRepository } from '../repository/athlete.respository';
+import {
+  AthleteServiceInterface,
+  CreateAthleteServiceRequest,
+  CreateAthleteServiceResponse,
+} from './interface/athlete.service.interface';
 
 @Injectable()
-export class AthleteService {
+export class AthleteService implements AthleteServiceInterface {
+  constructor(private readonly athleteRepository: AthleteRepository) {}
 
-    constructor(private athleteRepositoryService: AthleteRepositoryService){
-
-    }
-
-    async createAthlete(createAthleteDTO: CreateAthleteDTO): Promise<Athlete>{
-
-        try {
-            EnsureThat.isNotEmptyString(createAthleteDTO.name, `Name of athlete can't be empty`)        
-            const newAthlete : Athlete= {
-                name: createAthleteDTO.name 
-            }
-            return await this.athleteRepositoryService.create(newAthlete)    
-        } catch (error) {
-            throw new InternalServerErrorException(`Error on create new athlete: ${error.message}`)
-        }
-    }
-
-
+  createAthlete(
+    createAthlete: CreateAthleteServiceRequest,
+  ): Promise<CreateAthleteServiceResponse> {
+    throw new Error('Method not implemented.');
+  }
 }
