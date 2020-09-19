@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Post,
   Put,
   Query,
@@ -65,7 +66,10 @@ export class TeamController implements TeamApiInterface {
   @ApiResponse({ status: 200, type: GetTeamResponseDto })
   @ApiTags(TAG)
   async getTeam(@Query('id') id: number): Promise<GetTeamResponseDto> {
-    return await this.teamService.getTeam(id);
+    const existingTeam = await this.teamService.getTeam(id);
+    if (!existingTeam) throw new NotFoundException();
+
+    return existingTeam;
   }
 
   @Get('/list')

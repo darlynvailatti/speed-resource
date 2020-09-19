@@ -58,9 +58,6 @@ export class TeamService implements TeamServiceInterface {
   async getTeam(id: number): Promise<GetTeamServiceResponse> {
     console.log(id);
     const existing = await this.teamRepository.findOne(id);
-
-    if (!existing) throw new NotFoundException();
-
     return {
       id: existing.id,
       name: existing.name,

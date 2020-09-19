@@ -1,13 +1,13 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Team } from '../model/team.entity';
+import { TeamEntity } from '../model/team.entity';
 import {
   CreateTeamServiceRequest,
   CreateTeamServiceResponse,
 } from '../service/interface/team.service.interface';
 
-@EntityRepository(Team)
-export class TeamRepository extends Repository<Team> {
-  async findByName(name: string): Promise<Team> {
+@EntityRepository(TeamEntity)
+export class TeamRepository extends Repository<TeamEntity> {
+  async findByName(name: string): Promise<TeamEntity> {
     return await this.createQueryBuilder('team')
       .where('team.name = :name ', { name: name })
       .getOne();
