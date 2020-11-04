@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BussinesException } from 'src/common/exceptions';
+import { TeamBusinessExceptions } from 'src/constants/exception.maps';
 import { TeamRepository } from '../repository/team.repository';
 import {
   CreateTeamServiceRequest,
@@ -25,7 +26,9 @@ export class TeamService implements TeamServiceInterface {
 
     if (existingTeam) {
       const exceptionMessage = `Team with name '${name}' already exist`;
-      throw new BussinesException('0', exceptionMessage);
+      throw new BussinesException(
+        TeamBusinessExceptions.TEAM_WITH_NAME_ALREADY_EXIST,
+      );
     }
 
     const createdTeam = await this.teamRepository.createTeam(createTeamDto);

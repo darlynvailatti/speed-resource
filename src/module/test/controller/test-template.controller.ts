@@ -5,7 +5,7 @@ import {
   NotFoundException,
   Param,
   Post,
-  Query,
+  Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TestTemplate } from '../service/interface/test-template.service.interface';
@@ -15,6 +15,8 @@ import {
   TAG,
   TestTemplateApiInterface,
   TestTemplateDto,
+  UpdateTestTemplateDto,
+  UpdateTestTemplateResponseDto,
 } from './api/test-template.api.interface';
 
 @Controller({ path: 'test-template' })
@@ -49,5 +51,22 @@ export class TestTemplateController implements TestTemplateApiInterface {
       );
 
     return existingTestTemplate;
+  }
+
+  @Put()
+  @ApiOperation({ summary: 'Update a existing TestTemplate' })
+  @ApiResponse({ status: 200, type: UpdateTestTemplateDto })
+  @ApiTags(TAG)
+  async updateTestTemplate(
+    @Body() updateTestTemplateDto: UpdateTestTemplateDto,
+  ): Promise<UpdateTestTemplateResponseDto> {
+    console.log(updateTestTemplateDto);
+    const updatedTestTemplate = await this.testTemplateService.updateTestTemplate(
+      updateTestTemplateDto,
+    );
+
+    return {
+      testTemplate: updatedTestTemplate.testTemplate,
+    };
   }
 }

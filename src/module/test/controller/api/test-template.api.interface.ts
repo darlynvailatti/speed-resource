@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsNotEmptyObject, IsNumber } from 'class-validator';
 
 export const TAG = 'test-template';
 
@@ -8,6 +9,10 @@ export interface TestTemplateApiInterface {
   ): Promise<TestTemplateDto>;
 
   getTestTemplate(id: number): Promise<TestTemplateDto>;
+
+  updateTestTemplate(
+    updateTestTemplateDto: UpdateTestTemplateDto,
+  ): Promise<UpdateTestTemplateResponseDto>;
 }
 
 export class SensorDto {
@@ -27,7 +32,7 @@ export class EdgeDto {
   @ApiProperty() endNode: NodeDto;
 }
 
-export class Stopwatcher {
+export class StopwatcherDto {
   @ApiProperty() time: number;
   @ApiProperty() beginEdgeSequenceNumber: number;
   @ApiProperty() endEdgeSequenceNumber: number;
@@ -37,16 +42,37 @@ export class Stopwatcher {
 export class GraphDto {
   @ApiProperty({ type: [EdgeDto] }) edges: [EdgeDto];
   @ApiProperty({ type: [NodeDto] }) nodes: [NodeDto];
-  @ApiProperty({ type: [Stopwatcher] }) stopwatchers: [Stopwatcher];
+  @ApiProperty({ type: [StopwatcherDto] }) stopwatchers: [StopwatcherDto];
 }
 
 export class TestTemplateDto {
-  @ApiProperty({ required: false }) code?: number;
+  @ApiProperty({ required: false }) id?: number;
   @ApiProperty({ required: false }) description: string;
   @ApiProperty() graph: GraphDto;
 }
 
 export class CreateTestTemplateDto {
-  @ApiProperty({ required: true }) description: string;
-  @ApiProperty({ type: GraphDto }) graph: GraphDto;
+  @ApiProperty({ required: true })
+  @IsNotEmpty()
+  description: string;
+
+  @ApiProperty({ type: GraphDto })
+  @IsNotEmptyObject()
+  graph: GraphDto;
+}
+
+export class UpdateTestTemplateDto {
+  @ApiProperty({ required: true })
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
+
+  @ApiProperty({ type: TestTemplateDto, required: true })
+  @IsNotEmptyObject()
+  testTemplate: TestTemplateDto;
+}
+
+export class UpdateTestTemplateResponseDto {
+  @ApiProperty({ type: TestTemplateDto })
+  testTemplate: TestTemplateDto;
 }

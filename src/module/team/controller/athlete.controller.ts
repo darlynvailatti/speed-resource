@@ -6,9 +6,4 @@ import { AthleteService } from '../service/athlete.service';
 })
 export class AthleteController {
   constructor(private athleteService: AthleteService) {}
-
-  @Get()
-  getAthlete(): any {
-    return '';
-  }
 }

@@ -1,53 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { BussinesException } from 'src/common/exceptions';
+import { Inject, Injectable } from '@nestjs/common';
+import { Processor } from 'src/common/processor.interface';
 import { TestTemplateRepository } from '../repository/test-template.repository';
 import {
   CreateTestTemplateRequest,
   CreateTestTemplateResponse,
   TestTemplate,
   TestTemplateServiceInterface,
+  UpdateTestTemplateRequest,
+  UpdateTestTemplateResponse,
 } from './interface/test-template.service.interface';
-import {
-  TestTemplateValidatorService,
-  ValidationRequestDTO,
-} from './validation/test-template-validator.service';
-
+import { CreateTestTemplateProcessor } from './processor/create-test-template.processor';
+import { UpdateTestTemplateProcessor } from './processor/update-test-template.processor';
 @Injectable()
 export class TestTemplateService implements TestTemplateServiceInterface {
   constructor(
+    private readonly createTestTemplateProcessor: CreateTestTemplateProcessor,
+    private readonly updateTestTemplateProcessor: UpdateTestTemplateProcessor,
     private readonly testTemplateRepository: TestTemplateRepository,
-    private readonly testTemplateValidatorService: TestTemplateValidatorService,
   ) {}
 
   async createTestTemplate(
     createTestTemplate: CreateTestTemplateRequest,
   ): Promise<CreateTestTemplateResponse> {
-    const testTemplate: TestTemplate = {
-      description: createTestTemplate.description,
-      graph: createTestTemplate.graph,
-    };
-    const validationRquest: ValidationRequestDTO = {
-      testTemplate: testTemplate,
-    };
-    const validationResponse = await this.testTemplateValidatorService.validate(
-      validationRquest,
-    );
-    if (!validationResponse.isValid)
-      throw new BussinesException(
-        '',
-        `Error on template validation: ${validationResponse.causeIfIsNotValid}`,
-      );
-
-    const createdTestTemplate = await this.testTemplateRepository.createTestTemplate(
-      testTemplate,
-    );
-
-    return {
-      template: createdTestTemplate,
-    };
+    return await this.createTestTemplateProcessor.perform(createTestTemplate);
   }
 
   async getTestTemplate(id: number): Promise<TestTemplate> {
     return await this.testTemplateRepository.findByIdAndParse(id);
+  }
+
+  async updateTestTemplate(
+    updateTestTemplate: UpdateTestTemplateRequest,
+  ): Promise<UpdateTestTemplateResponse> {
+    return await this.updateTestTemplateProcessor.perform(updateTestTemplate);
   }
 }

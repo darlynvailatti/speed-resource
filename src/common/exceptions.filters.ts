@@ -17,8 +17,8 @@ export class BussinesExceptionFilter
     response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       timestamp: new Date().toISOString(),
       path: request.url,
-      errorCode: exception.code,
-      message: exception.message,
+      errorCode: exception.mappedException.code,
+      message: exception.mappedException.message,
     });
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AbstractProcessor } from 'src/common/processor.interface';
 import { EnsureThat } from 'src/common/utils';
 import { TestTemplate } from '../interface/test-template.service.interface';
 
@@ -12,10 +13,21 @@ export interface ValidationResponseDTO {
 }
 
 @Injectable()
-export class TestTemplateValidatorService {
+export class TestTemplateValidatorService extends AbstractProcessor<
+  ValidationRequestDTO,
+  ValidationResponseDTO
+> {
   private template: TestTemplate;
 
-  public async validate(
+  checkInput(input: ValidationRequestDTO): Promise<void> {
+    return null;
+  }
+
+  async execute(input: ValidationRequestDTO): Promise<ValidationResponseDTO> {
+    return await this.validate(input);
+  }
+
+  private async validate(
     validationRequest: ValidationRequestDTO,
   ): Promise<ValidationResponseDTO> {
     try {
@@ -27,7 +39,7 @@ export class TestTemplateValidatorService {
       this.template = validationRequest.testTemplate;
       EnsureThat.isNotNull(
         this.template.graph,
-        `Template ${this.template.code} don't have Graph`,
+        `Template ${this.template.id} don't have Graph`,
       );
 
       this.graphValidation();

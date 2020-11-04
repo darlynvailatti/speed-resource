@@ -4,6 +4,10 @@ export interface TestTemplateServiceInterface {
   ): Promise<CreateTestTemplateResponse>;
 
   getTestTemplate(id: number): Promise<TestTemplate>;
+
+  updateTestTemplate(
+    updateTestTemplate: UpdateTestTemplateRequest,
+  ): Promise<UpdateTestTemplateResponse>;
 }
 
 export class Sensor {
@@ -37,7 +41,7 @@ export class Graph {
 }
 
 export class TestTemplate {
-  code?: number;
+  id?: number;
   description: string;
   graph: Graph;
 }
@@ -49,4 +53,13 @@ export class CreateTestTemplateRequest {
 
 export class CreateTestTemplateResponse {
   template: TestTemplate;
+}
+
+export class UpdateTestTemplateRequest {
+  id: number;
+  testTemplate: TestTemplate;
+}
+
+export class UpdateTestTemplateResponse {
+  testTemplate: TestTemplate;
 }

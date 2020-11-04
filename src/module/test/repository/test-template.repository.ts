@@ -17,7 +17,7 @@ export class TestTemplateRepository extends Repository<TestTemplateEntity> {
     newTestTemplate = await this.save(newTestTemplate);
 
     return {
-      code: newTestTemplate.id,
+      id: newTestTemplate.id,
       description: newTestTemplate.description,
       graph: template.graph,
     };
@@ -28,9 +28,28 @@ export class TestTemplateRepository extends Repository<TestTemplateEntity> {
     if (!testTemplateById) return null;
     const parsedGraph: Graph = JSON.parse(testTemplateById.graph);
     return {
-      code: testTemplateById.id,
+      id: testTemplateById.id,
       description: testTemplateById.description,
       graph: parsedGraph,
+    };
+  }
+
+  async parseAndSave(testTemplate: TestTemplate): Promise<TestTemplate> {
+    if (!testTemplate) return null;
+
+    const parsedGraph = JSON.stringify(testTemplate.graph);
+
+    const testTemplateModel: TestTemplateEntity = {
+      id: testTemplate.id,
+      description: testTemplate.description,
+      graph: parsedGraph,
+    };
+    const savedTestTemplate = await this.save(testTemplateModel);
+
+    return {
+      id: savedTestTemplate.id,
+      description: savedTestTemplate.description,
+      graph: JSON.parse(savedTestTemplate.graph),
     };
   }
 }
